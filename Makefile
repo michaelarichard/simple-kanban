@@ -11,6 +11,35 @@ setup:
 	. venv/bin/activate && pip install -r requirements.txt
 	pre-commit install || echo "pre-commit not available"
 
+# Secrets management with SOPS
+secrets:
+	@echo "🔐 Generating SOPS-encrypted secrets..."
+	python scripts/generate-secrets.py
+
+secrets-decrypt:
+	@echo "🔓 Decrypting secrets..."
+	sops -d .env.sops > .env
+	@echo "✅ Secrets decrypted to .env"
+
+secrets-edit:
+	@echo "✏️ Editing encrypted secrets..."
+	sops .env.sops
+
+secrets-k8s-decrypt:
+	@echo "🔓 Decrypting Kubernetes secrets..."
+	sops -d secrets/kubernetes-secrets.yaml
+
+secrets-k8s-apply:
+	@echo "🚀 Applying Kubernetes secrets..."
+	sops -d secrets/kubernetes-secrets.yaml | kubectl apply -f -
+
+secrets-check:
+	@echo "🔍 Checking SOPS setup..."
+	@command -v sops >/dev/null 2>&1 || { echo "❌ SOPS not installed"; exit 1; }
+	@command -v gpg >/dev/null 2>&1 || { echo "❌ GPG not installed"; exit 1; }
+	@gpg --list-secret-keys >/dev/null 2>&1 || { echo "❌ No GPG keys found"; exit 1; }
+	@echo "✅ SOPS and GPG are properly configured"
+
 # Run tests with coverage
 test:
 	pytest tests/ -v --cov=src --cov-report=html --cov-report=term-missing

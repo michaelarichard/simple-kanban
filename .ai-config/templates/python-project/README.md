@@ -1,40 +1,32 @@
-# Simple Kanban Board
+# PROJECT_NAME_PLACEHOLDER
 
-A self-hosted kanban board application with drag-and-drop functionality, built for complete ownership and customization.
+A containerized Python FastAPI application with Kubernetes deployment.
 
-## Overview
+## Features
 
-This project provides a containerized kanban board that you fully own and control, with no vendor lock-in or licensing concerns. Built with FastAPI backend, PostgreSQL database, and modern web frontend.
-
-## Key Features
-
-### Core Kanban Functionality
-- **Drag-and-drop task management** with real-time updates
-- **Multiple project support** with customizable columns
-- **Task metadata and attachments** using flexible JSONB storage
-- **Real-time collaboration** via WebSocket connections
-
-### Story Planning Integration
-- **Epic and user story management** with hierarchical organization
-- **Task-to-story linking** for traceability
-- **Story point estimation** and sprint planning
-- **Velocity tracking** and burndown charts
-
-### API-First Design
-- **Comprehensive REST API** with full CRUD operations
-- **Swagger/OpenAPI documentation** auto-generated
-- **CLI tool integration** for automation and scripting
-- **Webhook support** for external integrations
-
-### Self-Hosted Deployment
-- **Container-first architecture** with Docker and Kubernetes
-- **Zero manual deployment steps** with automated database migrations
-- **High availability** with PostgreSQL replication and Redis clustering
-- **Security-focused** with OAuth2/JWT authentication
+- **FastAPI**: Modern, fast web framework for building APIs
+- **Containerized**: Docker with multi-stage builds and non-root user
+- **Kubernetes Ready**: Helm charts with dev/prod configurations
+- **Testing**: Unit tests with pytest and integration tests
+- **Security**: Non-root containers, security contexts, health checks
+- **Development Workflow**: Skaffold for local development
 
 ## Quick Start
 
+### Prerequisites
+
+- Docker
+- kubectl
+- Skaffold
+- Python 3.11+
+
 ### Development Setup
+
+1. **Clone and setup**:
+   ```bash
+   git clone <repository>
+   cd PROJECT_NAME_PLACEHOLDER
+   make setup
    ```
 
 2. **Run tests**:
@@ -68,13 +60,13 @@ skaffold run -p prod
 ## Project Structure
 
 ```
-simple-kanban/
+PROJECT_NAME_PLACEHOLDER/
 ├── src/                    # Source code
 │   └── main.py            # FastAPI application
 ├── tests/                 # Test files
 │   └── test_main.py       # Unit tests
 ├── helm/                  # Helm chart
-│   └── simple-kanban/
+│   └── PROJECT_NAME_PLACEHOLDER/
 ├── Dockerfile             # Container definition
 ├── Makefile              # Build automation
 ├── skaffold.yaml         # Development workflow

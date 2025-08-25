@@ -1,0 +1,42 @@
+# Development environment overrides
+replicaCount: 1
+
+image:
+  tag: "latest"
+  pullPolicy: Always
+
+resources:
+  limits:
+    cpu: 200m
+    memory: 256Mi
+  requests:
+    cpu: 50m
+    memory: 64Mi
+
+# Enable ingress for local development
+ingress:
+  enabled: true
+  className: "nginx"
+  annotations:
+    nginx.ingress.kubernetes.io/rewrite-target: /
+  hosts:
+    - host: PROJECT_NAME_PLACEHOLDER.local
+      paths:
+        - path: /
+          pathType: Prefix
+
+# Development environment variables
+env:
+  - name: ENVIRONMENT
+    value: "development"
+  - name: LOG_LEVEL
+    value: "DEBUG"
+  - name: RELOAD
+    value: "true"
+
+# Relaxed security for development
+podSecurityContext:
+  fsGroup: 1000
+
+securityContext:
+  readOnlyRootFilesystem: false

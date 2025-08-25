@@ -1,0 +1,43 @@
+apiVersion: skaffold/v4beta7
+kind: Config
+metadata:
+  name: PROJECT_NAME_PLACEHOLDER
+build:
+  artifacts:
+  - image: PROJECT_NAME_PLACEHOLDER
+    docker:
+      dockerfile: Dockerfile
+  local:
+    push: false
+deploy:
+  helm:
+    releases:
+    - name: PROJECT_NAME_PLACEHOLDER
+      chartPath: helm/PROJECT_NAME_PLACEHOLDER
+      valuesFiles:
+      - helm/values-dev.yaml
+      setValues:
+        image.repository: PROJECT_NAME_PLACEHOLDER
+        image.tag: PROJECT_NAME_PLACEHOLDER
+portForward:
+- resourceType: service
+  resourceName: PROJECT_NAME_PLACEHOLDER
+  port: 8000
+  localPort: 8000
+profiles:
+- name: dev
+  deploy:
+    helm:
+      releases:
+      - name: PROJECT_NAME_PLACEHOLDER
+        chartPath: helm/PROJECT_NAME_PLACEHOLDER
+        valuesFiles:
+        - helm/values-dev.yaml
+- name: prod
+  deploy:
+    helm:
+      releases:
+      - name: PROJECT_NAME_PLACEHOLDER
+        chartPath: helm/PROJECT_NAME_PLACEHOLDER
+        valuesFiles:
+        - helm/values-prod.yaml

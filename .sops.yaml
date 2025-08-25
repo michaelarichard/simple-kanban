@@ -1,0 +1,15 @@
+creation_rules:
+  - path_regex: \.secrets\.yaml$
+    encrypted_regex: ^(data|stringData)$
+    pgp: >-
+      # Add your GPG key fingerprint here
+      # Example: 1234567890ABCDEF1234567890ABCDEF12345678
+      # Run: gpg --list-secret-keys --keyid-format LONG
+      # Then replace this comment with your key fingerprint
+  - path_regex: secrets/.*\.yaml$
+    encrypted_regex: ^(data|stringData)$
+    pgp: >-
+      # Same GPG key fingerprint as above
+  - path_regex: \.env\.sops$
+    pgp: >-
+      # Same GPG key fingerprint as above

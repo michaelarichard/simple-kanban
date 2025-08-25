@@ -1,0 +1,16 @@
+apiVersion: v2
+name: PROJECT_NAME_PLACEHOLDER
+description: A Helm chart for PROJECT_NAME_PLACEHOLDER
+type: application
+version: 0.1.0
+appVersion: "1.0.0"
+keywords:
+  - python
+  - fastapi
+  - microservice
+home: https://github.com/your-org/PROJECT_NAME_PLACEHOLDER
+sources:
+  - https://github.com/your-org/PROJECT_NAME_PLACEHOLDER
+maintainers:
+  - name: Your Name
+    email: your.email@example.com
