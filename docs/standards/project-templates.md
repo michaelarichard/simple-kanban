@@ -1,0 +1,92 @@
+---
+description: Standard project templates and patterns
+---
+
+# Project Templates
+
+## Container-First Development Standards
+
+All projects must follow these containerization principles:
+
+### Security Requirements
+- **Non-root user**: All containers run with dedicated user (uid:gid 1000:1000)
+- **Minimal base images**: Use official slim/alpine variants
+- **Multi-stage builds**: Separate build and runtime environments
+- **Security scanning**: Integrate vulnerability scanning in CI/CD
+
+### File Structure Standards
+```
+project-name/
+├── src/                    # Source code
+├── tests/                  # Test files
+├── docs/                   # Documentation
+├── helm/                   # Helm chart
+│   ├── Chart.yaml
+│   ├── values.yaml
+│   ├── values-dev.yaml
+│   ├── values-prod.yaml
+│   └── templates/
+├── Dockerfile              # Multi-stage container build
+├── Makefile               # Standard targets: test, lint, deploy
+├── skaffold.yaml          # Development workflow
+├── requirements.txt       # Dependencies (Python)
+├── .gitignore
+├── .dockerignore
+└── README.md
+```
+
+### Required Makefile Targets
+```makefile
+.PHONY: test lint deploy setup clean
+
+test:
+	# Run unit and integration tests
+	
+lint:
+	# Code quality checks
+	
+deploy:
+	# Deploy using skaffold
+	
+setup:
+	# Initialize development environment
+	
+clean:
+	# Clean build artifacts
+```
+
+### Helm Chart Requirements
+- **Resource limits**: Always define CPU/memory limits
+- **Health checks**: Liveness and readiness probes
+- **Security context**: Non-root, read-only filesystem where possible
+- **ConfigMaps/Secrets**: Externalize configuration
+- **Horizontal Pod Autoscaler**: For production workloads
+
+### Testing Standards
+- **Unit tests**: Minimum 80% coverage
+- **Integration tests**: API endpoint testing
+- **Security tests**: Container scanning, dependency checks
+- **Performance tests**: Load testing for APIs
+
+## Language-Specific Templates
+
+### Python Template
+- **Framework**: FastAPI for APIs, Flask for simple web apps
+- **Testing**: pytest with coverage reporting
+- **Linting**: black, flake8, mypy
+- **Dependencies**: requirements.txt with pinned versions
+- **ASGI Server**: uvicorn with gunicorn workers
+
+### Go Template
+- **Framework**: Gin or Echo for web services
+- **Testing**: Go standard testing with testify
+- **Linting**: golangci-lint
+- **Dependencies**: Go modules with vendor directory
+- **Build**: Multi-stage Docker builds
+
+### JavaScript/Node.js Template
+- **Framework**: Express.js or Fastify
+- **Testing**: Jest with supertest for API testing
+- **Linting**: ESLint with Prettier
+- **Dependencies**: package-lock.json for reproducible builds
+- **Runtime**: Node.js LTS in Alpine container

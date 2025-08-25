@@ -1,0 +1,43 @@
+apiVersion: skaffold/v4beta7
+kind: Config
+metadata:
+  name: simple-kanban
+build:
+  artifacts:
+  - image: simple-kanban
+    docker:
+      dockerfile: Dockerfile
+  local:
+    push: false
+deploy:
+  helm:
+    releases:
+    - name: simple-kanban
+      chartPath: helm/simple-kanban
+      valuesFiles:
+      - helm/values-dev.yaml
+      setValues:
+        image.repository: simple-kanban
+        image.tag: simple-kanban
+portForward:
+- resourceType: service
+  resourceName: simple-kanban
+  port: 8000
+  localPort: 8000
+profiles:
+- name: dev
+  deploy:
+    helm:
+      releases:
+      - name: simple-kanban
+        chartPath: helm/simple-kanban
+        valuesFiles:
+        - helm/values-dev.yaml
+- name: prod
+  deploy:
+    helm:
+      releases:
+      - name: simple-kanban
+        chartPath: helm/simple-kanban
+        valuesFiles:
+        - helm/values-prod.yaml
