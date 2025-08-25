@@ -1,4 +1,5 @@
-.PHONY: test lint deploy setup clean build run
+# Development targets
+.PHONY: dev test lint format clean setup install dev-monitoring monitoring-up monitoring-down build run
 
 # Variables
 PROJECT_NAME ?= $(shell basename $(CURDIR))
@@ -58,13 +59,34 @@ format:
 build:
 	docker build -t $(PROJECT_NAME):$(IMAGE_TAG) .
 
+# Deploy using Helm
+deploy:
+	helm upgrade --install $(PROJECT_NAME) ./helm/$(PROJECT_NAME) \
+		--set image.repository=$(REGISTRY)/$(PROJECT_NAME) \
+		--set image.tag=$(IMAGE_TAG)
+
+# Monitoring stack targets
+monitoring-up:
+	docker-compose -f docker-compose.monitoring.yml up -d
+	@echo "Monitoring stack started:"
+	@echo "  Grafana: http://localhost:3000 (admin/admin123)"
+	@echo "  Prometheus: http://localhost:9090"
+	@echo "  AlertManager: http://localhost:9093"
+
+monitoring-down:
+	docker-compose -f docker-compose.monitoring.yml down
+
+dev-monitoring: monitoring-up
+	@echo "Starting development with monitoring..."
+	docker-compose -f docker-compose.yml -f docker-compose.monitoring.yml up -d
+	@echo "Application with monitoring started:"
+	@echo "  Application: http://localhost:8000"
+	@echo "  Metrics: http://localhost:8000/metrics"
+	@echo "  Grafana: http://localhost:3000"
+
 # Run application locally
 run:
 	uvicorn src.main:app --reload --host 0.0.0.0 --port 8000
-
-# Deploy using Skaffold
-deploy:
-	skaffold run
 
 # Deploy for development
 dev:

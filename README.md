@@ -8,16 +8,22 @@ This project provides a containerized kanban board that you fully own and contro
 
 ## Key Features
 
-### Core Kanban Functionality
-- **Drag-and-drop task management** with real-time updates
-- **Multiple project support** with customizable columns
+- **Self-hosted**: Complete ownership and control of your data
+- **Single container**: Deploy anywhere with `docker run`
+- **Drag-and-drop**: Intuitive kanban board interface
+- **Fast & lightweight**: Minimal resource requirements
+- **Customizable**: Easy to modify and extend
+- **Secure**: Container security best practices
+- **Production-ready**: Helm charts and CI/CD integration
+- **Full observability**: OpenTelemetry tracing and metrics
+- **Local monitoring**: Built-in Prometheus + Grafana stack
 - **Task metadata and attachments** using flexible JSONB storage
 - **Real-time collaboration** via WebSocket connections
 
 ### Story Planning Integration
 - **Epic and user story management** with hierarchical organization
 - **Task-to-story linking** for traceability
-- **Story point estimation** and sprint planning
+- **Task point estimation** and sprint planning
 - **Velocity tracking** and burndown charts
 
 ### API-First Design
@@ -34,60 +40,74 @@ This project provides a containerized kanban board that you fully own and contro
 
 ## Quick Start
 
-### Development Setup
-   ```
+### Development
+```bash
+# Clone and setup
+git clone https://github.com/michaelarichard/simple-kanban.git
+cd simple-kanban
+make setup
 
-2. **Run tests**:
-   ```bash
-   make test
-   make lint
-   ```
+# Generate secrets (requires GPG key)
+make secrets-gen
 
-3. **Start development**:
-   ```bash
-   make dev
-   # or
-   skaffold dev
-   ```
+# Start development environment
+make dev
 
-4. **Access the application**:
-   - API: http://localhost:8000
-   - Docs: http://localhost:8000/docs
-   - Health: http://localhost:8000/health
+# Start with full monitoring stack
+make dev-monitoring
+```
+
+### Local Monitoring Stack
+```bash
+# Start Prometheus + Grafana + AlertManager
+make monitoring-up
+
+# Access monitoring services
+# Grafana: http://localhost:3000 (admin/admin123)
+# Prometheus: http://localhost:9090
+# Application metrics: http://localhost:8000/metrics
+```
 
 ### Production Deployment
-
 ```bash
-# Build and deploy
+# Build and deploy with Helm
+make build
 make deploy
+```
 
-# Or with specific profile
-skaffold run -p prod
+### Docker Run
+```bash
+# Simple single-container deployment
+docker run -p 8000:8000 -v kanban-data:/app/data simple-kanban:latest
 ```
 
 ## Project Structure
 
 ```
 simple-kanban/
-├── src/                    # Source code
-│   └── main.py            # FastAPI application
-├── tests/                 # Test files
-│   └── test_main.py       # Unit tests
-├── helm/                  # Helm chart
-│   └── simple-kanban/
-├── Dockerfile             # Container definition
-├── Makefile              # Build automation
-├── skaffold.yaml         # Development workflow
-├── requirements.txt      # Python dependencies
-└── test.sh              # Integration tests
+├── helm/                   # Kubernetes deployment
+│   └── simple-kanban/     # Helm chart
+├── monitoring/            # Local monitoring stack
+│   ├── prometheus/        # Prometheus configuration
+│   ├── grafana/          # Grafana dashboards
+│   └── alertmanager/     # Alert configuration
+├── scripts/               # Utility scripts
+│   └── generate-secrets.py # SOPS secret generation
+├── docs/                  # Documentation
+│   └── *.md              # Project documentation
+├── .ai-config/           # AI workflow configuration
+├── docker-compose.monitoring.yml # Local monitoring stack
+├── Dockerfile            # Container definition
+├── pyproject.toml        # Python dependencies
+└── Makefile             # Development commands tests
 ```
 
 ## API Endpoints
 
 - `GET /` - Root endpoint
 - `GET /health` - Health check
-- `POST /echo` - Echo message endpoint
-- `GET /metrics` - Basic metrics
+- `GET /health/detailed` - Detailed health with dependency checks
+- `GET /metrics` - Prometheus metrics endpoint
 - `GET /docs` - OpenAPI documentation
 
 ## Configuration
@@ -97,6 +117,9 @@ simple-kanban/
 - `ENVIRONMENT`: Runtime environment (development/production)
 - `LOG_LEVEL`: Logging level (DEBUG/INFO/WARNING/ERROR)
 - `WORKERS`: Number of worker processes
+- `OTEL_SERVICE_NAME`: OpenTelemetry service name
+- `OTEL_EXPORTER_OTLP_ENDPOINT`: Prometheus Gateway endpoint
+- `OTEL_EXPORTER_OTLP_PROTOCOL`: Protocol (http/protobuf or grpc)
 
 ### Helm Values
 

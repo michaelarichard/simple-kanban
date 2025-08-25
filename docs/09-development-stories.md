@@ -214,6 +214,40 @@ As a system administrator, I need JWT authentication so that the application can
 
 ### Epic: Health Monitoring
 
+#### DEV-007: Health Monitoring & Observability Implementation
+**Epic**: Health Monitoring & Observability  
+**Story Points**: 5  
+**Priority**: Medium  
+**Dependencies**: DEV-003, DEV-004
+
+**Description**: Implement comprehensive health check endpoints, OpenTelemetry observability, and monitoring capabilities with Prometheus Gateway integration.
+
+**Acceptance Criteria**:
+- [ ] Basic `/health` endpoint returns service status
+- [ ] Detailed `/health/detailed` endpoint checks all dependencies
+- [ ] Database connectivity health check
+- [ ] Redis connectivity health check
+- [ ] OpenTelemetry tracing with OTLP export to Prometheus Gateway
+- [ ] OpenTelemetry metrics collection and export
+- [ ] Structured logging with correlation IDs
+- [ ] Custom business metrics (task creation rate, user activity)
+- [ ] Health check integration tests
+- [ ] Observability integration tests
+
+**Technical Tasks**:
+- Create health check service module
+- Implement dependency health checkers
+- Configure OpenTelemetry SDK with Prometheus Gateway export
+- Add automatic instrumentation for FastAPI, SQLAlchemy, Redis
+- Implement custom spans for business logic
+- Add correlation ID middleware
+- Configure structured logging with correlation IDs
+- Create custom metrics for business KPIs
+- Write health check and observability tests
+- Document monitoring and observability setup
+
+---
+
 #### DEV-008: Health Check Endpoints
 **Type**: Infrastructure  
 **Priority**: Medium  

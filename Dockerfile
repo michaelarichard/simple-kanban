@@ -21,6 +21,17 @@ RUN apt-get update && apt-get install -y \
     curl \
     && rm -rf /var/lib/apt/lists/*
 
+# Set environment variables
+ENV PYTHONPATH=/app \
+    PYTHONDONTWRITEBYTECODE=1 \
+    PYTHONUNBUFFERED=1 \
+    POETRY_NO_INTERACTION=1 \
+    POETRY_VENV_IN_PROJECT=1 \
+    POETRY_CACHE_DIR=/opt/poetry-cache \
+    OTEL_SERVICE_NAME=simple-kanban \
+    OTEL_SERVICE_VERSION=1.0.0 \
+    OTEL_EXPORTER_OTLP_PROTOCOL=http/protobuf
+
 # Copy installed packages from builder
 COPY --from=builder /root/.local /home/appuser/.local
 

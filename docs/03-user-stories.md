@@ -95,6 +95,16 @@
   - Read-only root filesystem where possible
   - Security context configured in Helm chart
 
+### US-013 (Medium Priority)
+**As a system admin, I want comprehensive observability so I can monitor application health and performance**
+- **Acceptance Criteria:**
+  - OpenTelemetry tracing exports to Prometheus Gateway
+  - Local `/metrics` endpoint for Prometheus scraping
+  - Health checks include dependency status
+  - Structured logging with correlation IDs
+  - Business metrics (task creation/completion rates)
+  - Performance metrics (response times, error rates)
+
 ### US-012 (Low Priority)
 **As a user, I want keyboard shortcuts so I can work efficiently**
 - **Acceptance Criteria:**
@@ -106,6 +116,6 @@
 
 ## Story Prioritization
 
-**Phase 1 (MVP):** US-001, US-002, US-003, US-006, US-010, US-011
+**Phase 1 (MVP):** US-001, US-002, US-003, US-006, US-010, US-011, US-013
 **Phase 2 (Enhancement):** US-004, US-005, US-007, US-008
 **Phase 3 (Polish):** US-009, US-012

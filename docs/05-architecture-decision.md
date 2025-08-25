@@ -4,6 +4,38 @@
 
 Based on requirements for **API integration** and **story planning workflows**, we're selecting the PostgreSQL + Redis pattern.
 
+## Technology Stack
+
+### Backend
+- **Framework**: FastAPI with async/await support
+- **ORM**: SQLAlchemy 2.0 with async support
+- **Database**: PostgreSQL 15+ with JSONB for flexible task metadata
+- **Cache**: Redis 7+ for session storage and real-time updates
+- **Authentication**: JWT tokens with refresh mechanism
+- **API Documentation**: OpenAPI/Swagger with interactive docs
+
+### Frontend
+- **Core**: HTML5, CSS3, JavaScript (ES6+)
+- **Drag & Drop**: Native HTML5 Drag and Drop API
+- **Styling**: CSS Grid and Flexbox for responsive layout
+- **HTTP Client**: Fetch API for REST communication
+- **Real-time**: WebSocket connection for live updates
+
+### Observability
+- **Tracing**: OpenTelemetry with OTLP export to Prometheus Gateway
+- **Metrics**: OpenTelemetry metrics with custom business metrics
+- **Logging**: Structured logging with correlation IDs
+- **Health Checks**: Comprehensive health endpoints with dependency checks
+- **Performance**: Request/response timing and database query metrics
+
+### Infrastructure
+- **Containerization**: Docker with multi-stage builds
+- **Orchestration**: Kubernetes with Helm charts
+- **Development**: Skaffold for local development workflow
+- **Secrets Management**: SOPS with GPG encryption
+- **Reverse Proxy**: Nginx for production deployments
+- **Monitoring**: Prometheus Gateway collector integration
+
 ## Why PostgreSQL Over SQLite
 
 ### API and Integration Requirements

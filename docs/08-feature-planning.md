@@ -34,7 +34,7 @@
 - Core API endpoints (CRUD operations)
 - Authentication system
 - Docker containerization
-- Basic health checks and monitoring
+- Basic health checks and comprehensive observability
 
 **Acceptance Criteria:**
 - ✅ Database schema supports tasks with columns
@@ -42,9 +42,12 @@
 - ✅ JWT authentication working
 - ✅ Container runs with non-root user (1000:1000)
 - ✅ Health endpoint returns 200 OK
+- ✅ OpenTelemetry tracing exports to Prometheus Gateway
+- ✅ Local `/metrics` endpoint available for Prometheus scraping
+- ✅ Structured logging with correlation IDs implemented
 - ✅ All tests passing with >90% coverage
 
-**User Stories Covered:** US-003, US-006, US-011
+**User Stories Covered:** US-003, US-006, US-011, US-013
 
 ---
 
