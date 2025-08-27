@@ -40,3 +40,16 @@ podSecurityContext:
 
 securityContext:
   readOnlyRootFilesystem: false
+
+# Database and cache configuration for development
+storage:
+  postgres:
+    hostname: simple-kanban-postgres
+    username: kanban
+    database: simple_kanban
+    password: kanban
+
+cache:
+  redis:
+    hostname: simple-kanban-redis-master
+    password: kanban

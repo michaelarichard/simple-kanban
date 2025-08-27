@@ -79,3 +79,19 @@ readinessProbe:
   periodSeconds: 10
   timeoutSeconds: 5
   failureThreshold: 3
+
+# Database and cache configuration for production
+storage:
+  postgres:
+    hostname: simple-kanban-postgres
+    username: kanban
+    database: simple_kanban
+    credentialsSecret: simple-kanban-postgres-secret
+    adminPasswordKey: postgres-password
+    userPasswordKey: password
+
+cache:
+  redis:
+    hostname: simple-kanban-redis-master
+    credentialsSecret: simple-kanban-redis-secret
+    passwordKey: redis-password
