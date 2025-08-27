@@ -67,6 +67,60 @@ fix-ruff:       # Auto-fix with Ruff
 - **ConfigMaps/Secrets**: Externalize configuration
 - **Horizontal Pod Autoscaler**: For production workloads
 
+### Skaffold Configuration Standards
+
+#### Database and Cache Integration
+Applications requiring PostgreSQL and Redis should deploy them as part of the application stack using Bitnami Helm charts:
+
+```yaml
+deploy:
+  helm:
+    releases:
+    - name: app-postgres
+      remoteChart: bitnami/postgresql
+      version: "13.2.24"
+      setValues:
+        auth.postgresPassword: ${POSTGRES_PASSWORD:-dev-password}
+        auth.username: ${DB_USER:-appuser}
+        auth.password: ${DB_PASSWORD:-dev-password}
+        auth.database: ${DB_NAME:-appdb}
+        primary.persistence.size: ${PG_STORAGE:-8Gi}
+        metrics.enabled: ${ENABLE_METRICS:-false}
+    - name: app-redis
+      remoteChart: bitnami/redis
+      version: "18.19.4"
+      setValues:
+        auth.password: ${REDIS_PASSWORD:-dev-password}
+        master.persistence.size: ${REDIS_STORAGE:-8Gi}
+        metrics.enabled: ${ENABLE_METRICS:-false}
+```
+
+#### Environment-Specific Configuration
+- **Development**: Simple passwords, smaller storage (8Gi), metrics disabled
+- **Production**: Environment variable passwords, larger storage (100Gi/20Gi), metrics enabled
+
+#### Port Forwarding Standards
+```yaml
+portForward:
+- resourceType: service
+  resourceName: app-name
+  port: 8000
+  localPort: 8000
+- resourceType: service
+  resourceName: app-postgres
+  port: 5432
+  localPort: 5432
+- resourceType: service
+  resourceName: app-redis-master
+  port: 6379
+  localPort: 6379
+```
+
+#### Service Naming Convention
+- PostgreSQL: `{app-name}-postgres`
+- Redis: `{app-name}-redis-master`
+- Application: `{app-name}`
+
 ### Testing Standards
 - **Unit tests**: Minimum 80% coverage
 - **Integration tests**: API endpoint testing
