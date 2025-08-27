@@ -78,7 +78,7 @@ deploy:
     releases:
     - name: app-postgres
       remoteChart: bitnami/postgresql
-      version: "13.2.24"
+      version: "16.7.11"
       setValues:
         auth.postgresPassword: ${POSTGRES_PASSWORD:-dev-password}
         auth.username: ${DB_USER:-appuser}
@@ -88,7 +88,7 @@ deploy:
         metrics.enabled: ${ENABLE_METRICS:-false}
     - name: app-redis
       remoteChart: bitnami/redis
-      version: "18.19.4"
+      version: "21.2.3"
       setValues:
         auth.password: ${REDIS_PASSWORD:-dev-password}
         master.persistence.size: ${REDIS_STORAGE:-8Gi}
