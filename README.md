@@ -2,59 +2,72 @@
 
 A self-hosted kanban board application with drag-and-drop functionality, built for complete ownership and customization.
 
+## 🎉 MVP Status: COMPLETE ✅
+
+**Current Version**: MVP 1.0 (Production Ready)  
+**Last Updated**: September 4, 2025  
+**Branch**: `kanban-main1`
+
 ## Overview
 
 This project provides a containerized kanban board that you fully own and control, with no vendor lock-in or licensing concerns. Built with FastAPI backend, PostgreSQL database, and modern web frontend.
 
-## Key Features
+## ✅ Delivered MVP Features
 
-- **Self-hosted**: Complete ownership and control of your data
-- **Single container**: Deploy anywhere with `docker run`
-- **Drag-and-drop**: Intuitive kanban board interface
-- **Fast & lightweight**: Minimal resource requirements
-- **Customizable**: Easy to modify and extend
-- **Secure**: Container security best practices
-- **Production-ready**: Helm charts and CI/CD integration
-- **Full observability**: OpenTelemetry tracing and metrics
-- **Local monitoring**: Built-in Prometheus + Grafana stack
-- **Task metadata and attachments** using flexible JSONB storage
-- **Real-time collaboration** via WebSocket connections
+- **Complete Kanban Functionality**: Full CRUD operations for boards, columns, and tasks
+- **Drag-and-Drop**: Tasks move between columns with full persistence
+- **Task Aging**: Color-coded indicators showing "days open" (blue→green→orange→red)
+- **Board Management**: Multiple boards with persistent selection across sessions
+- **Modern UI**: Responsive design with animations and professional styling
+- **Self-Hosted**: Complete Kubernetes deployment with PostgreSQL backend
+- **Data Persistence**: All changes persist correctly across page refreshes and restarts
 
-### Story Planning Integration
-- **Epic and user story management** with hierarchical organization
-- **Task-to-story linking** for traceability
-- **Task point estimation** and sprint planning
-- **Velocity tracking** and burndown charts
+## 📋 Next Phase: Multi-User Authentication
 
-### API-First Design
-- **Comprehensive REST API** with full CRUD operations
-- **Swagger/OpenAPI documentation** auto-generated
-- **CLI tool integration** for automation and scripting
-- **Webhook support** for external integrations
+**Status**: Planned for Phase 2  
+**Documentation**: Complete design and 6-week implementation plan available
 
-### Self-Hosted Deployment
-- **Container-first architecture** with Docker and Kubernetes
-- **Zero manual deployment steps** with automated database migrations
-- **High availability** with PostgreSQL replication and Redis clustering
-- **Security-focused** with OAuth2/JWT authentication
+### Planned Features
+- **Google OIDC Integration**: Secure authentication with Google accounts
+- **Role-Based Access Control**: Owner, Editor, Viewer permissions
+- **Board Sharing**: Invite users and manage collaboration
+- **User Dashboard**: Personal board management interface
+- **Admin Interface**: System administration and user management
+
+## Current Architecture
+
+### Backend Stack
+- **Framework**: FastAPI (Python)
+- **Database**: PostgreSQL with SQLAlchemy ORM
+- **API Design**: RESTful endpoints with proper HTTP status codes
+- **Data Models**: Board → Column → Task hierarchy
+
+### Frontend Stack
+- **Technology**: Vanilla JavaScript (ES6+)
+- **Styling**: Modern CSS with Flexbox/Grid
+- **Icons**: FontAwesome integration
+- **State Management**: Class-based architecture with localStorage persistence
+
+### Deployment Stack
+- **Containerization**: Docker with multi-stage builds
+- **Orchestration**: Kubernetes with Helm charts
+- **Development**: Skaffold for rapid iteration
+- **Database**: PostgreSQL with automated migrations
 
 ## Quick Start
 
 ### Development
 ```bash
 # Clone and setup
-git clone https://github.com/michaelarichard/simple-kanban.git
+git clone https://github.com/your-repo/simple-kanban.git
 cd simple-kanban
-make setup
 
-# Generate secrets (requires GPG key)
-make secrets-gen
+# Start development environment with Skaffold
+skaffold dev --port-forward
 
-# Start development environment
-make dev
-
-# Start with full monitoring stack
-make dev-monitoring
+# Access application
+# Application: http://127.0.0.1:4503
+# API docs: http://127.0.0.1:4503/docs
 ```
 
 ### Local Monitoring Stack
@@ -104,11 +117,24 @@ simple-kanban/
 
 ## API Endpoints
 
-- `GET /` - Root endpoint
+### Application
+- `GET /` - Kanban board web interface
 - `GET /health` - Health check
-- `GET /health/detailed` - Detailed health with dependency checks
-- `GET /metrics` - Prometheus metrics endpoint
 - `GET /docs` - OpenAPI documentation
+
+### Boards
+- `GET /api/boards/` - List all boards
+- `POST /api/boards/` - Create new board
+- `GET /api/boards/{id}` - Get board details
+- `PUT /api/boards/{id}` - Update board
+- `DELETE /api/boards/{id}` - Delete board
+
+### Columns & Tasks
+- `GET /api/columns/board/{board_id}` - Get columns with tasks for a board
+- `POST /api/tasks/` - Create new task
+- `PUT /api/tasks/{id}` - Update task
+- `POST /api/tasks/{id}/move` - Move task between columns
+- `DELETE /api/tasks/{id}` - Delete task
 
 ## Configuration
 
