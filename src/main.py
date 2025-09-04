@@ -7,9 +7,12 @@ basic routing, and error handling.
 
 from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi.staticfiles import StaticFiles
+from fastapi.responses import FileResponse
 from pydantic import BaseModel
 from typing import Dict, Any
 import logging
+import os
 
 from .database import create_tables
 from .api import boards, columns, tasks
@@ -37,9 +40,14 @@ app.add_middleware(
 )
 
 # Include API routers
-app.include_router(boards.router, prefix="/api/v1")
-app.include_router(columns.router, prefix="/api/v1")
-app.include_router(tasks.router, prefix="/api/v1")
+app.include_router(boards.router, prefix="/api")
+app.include_router(columns.router, prefix="/api")
+app.include_router(tasks.router, prefix="/api")
+
+# Mount static files
+static_dir = os.path.join(os.path.dirname(__file__), "static")
+if os.path.exists(static_dir):
+    app.mount("/static", StaticFiles(directory=static_dir), name="static")
 
 # Create database tables on startup
 @app.on_event("startup")
@@ -61,14 +69,20 @@ class MessageResponse(BaseModel):
     echo: str
     length: int
 
-@app.get("/", response_model=Dict[str, str])
+@app.get("/")
 async def root():
-    """Root endpoint returning basic application info."""
-    return {
-        "message": "simple-kanban API",
-        "status": "running",
-        "docs": "/docs"
-    }
+    """Serve the main kanban board interface."""
+    static_dir = os.path.join(os.path.dirname(__file__), "static")
+    index_path = os.path.join(static_dir, "index.html")
+    
+    if os.path.exists(index_path):
+        return FileResponse(index_path)
+    else:
+        return {
+            "message": "simple-kanban API",
+            "status": "running",
+            "docs": "/docs"
+        }
 
 @app.get("/health", response_model=HealthResponse)
 async def health_check():

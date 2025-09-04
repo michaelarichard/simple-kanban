@@ -93,7 +93,9 @@ async def list_board_columns(board_id: int, db: Session = Depends(get_db)):
                     "id": task.id,
                     "title": task.title,
                     "description": task.description,
-                    "position": task.position
+                    "position": task.position,
+                    "created_at": task.created_at.isoformat(),
+                    "updated_at": task.updated_at.isoformat()
                 }
                 for task in col.tasks
             ]

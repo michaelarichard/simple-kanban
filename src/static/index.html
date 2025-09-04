@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Simple Kanban Board</title>
+    <link rel="stylesheet" href="/static/styles.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+</head>
+<body>
+    <div class="app">
+        <!-- Header -->
+        <header class="header">
+            <div class="header-content">
+                <h1 class="app-title">
+                    <i class="fas fa-columns"></i>
+                    Simple Kanban Board
+                </h1>
+                <div class="header-actions">
+                    <button class="btn btn-primary" id="new-board-btn">
+                        <i class="fas fa-plus"></i>
+                        New Board
+                    </button>
+                    <div class="board-selector">
+                        <select id="board-select" class="board-select">
+                            <option value="">Select a board...</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <!-- Loading State -->
+            <div id="loading" class="loading">
+                <div class="spinner"></div>
+                <p>Loading kanban board...</p>
+            </div>
+
+            <!-- Empty State -->
+            <div id="empty-state" class="empty-state" style="display: none;">
+                <div class="empty-content">
+                    <i class="fas fa-clipboard-list"></i>
+                    <h2>No Board Selected</h2>
+                    <p>Create a new board or select an existing one to get started.</p>
+                    <button class="btn btn-primary" id="create-first-board">
+                        <i class="fas fa-plus"></i>
+                        Create Your First Board
+                    </button>
+                </div>
+            </div>
+
+            <!-- Kanban Board -->
+            <div id="kanban-board" class="kanban-board" style="display: none;">
+                <div class="board-header">
+                    <div class="board-info">
+                        <h2 id="board-title">Board Title</h2>
+                        <p id="board-description">Board description</p>
+                    </div>
+                    <div class="board-actions">
+                        <button class="btn btn-secondary" id="edit-board-btn">
+                            <i class="fas fa-edit"></i>
+                            Edit Board
+                        </button>
+                    </div>
+                </div>
+
+                <div class="columns-container" id="columns-container">
+                    <!-- Columns will be dynamically generated here -->
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Modals -->
+    <!-- New Board Modal -->
+    <div id="board-modal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 id="board-modal-title">Create New Board</h3>
+                <button class="modal-close" id="board-modal-close">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <form id="board-form">
+                <div class="form-group">
+                    <label for="board-name">Board Name</label>
+                    <input type="text" id="board-name" name="name" required placeholder="Enter board name">
+                </div>
+                <div class="form-group">
+                    <label for="board-desc">Description (optional)</label>
+                    <textarea id="board-desc" name="description" placeholder="Enter board description"></textarea>
+                </div>
+                <div class="modal-actions">
+                    <button type="button" class="btn btn-secondary" id="board-cancel">Cancel</button>
+                    <button type="submit" class="btn btn-primary" id="board-submit">Create Board</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Task Modal -->
+    <div id="task-modal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 id="task-modal-title">Create New Task</h3>
+                <button class="modal-close" id="task-modal-close">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <form id="task-form">
+                <div class="form-group">
+                    <label for="task-title">Task Title</label>
+                    <input type="text" id="task-title" name="title" required placeholder="Enter task title">
+                </div>
+                <div class="form-group">
+                    <label for="task-desc">Description (optional)</label>
+                    <textarea id="task-desc" name="description" placeholder="Enter task description"></textarea>
+                </div>
+                <input type="hidden" id="task-column-id" name="column_id">
+                <input type="hidden" id="task-id" name="id">
+                <div class="modal-actions">
+                    <button type="button" class="btn btn-secondary" id="task-cancel">Cancel</button>
+                    <button type="submit" class="btn btn-primary" id="task-submit">Create Task</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Notification -->
+    <div id="notification" class="notification">
+        <div class="notification-content">
+            <span id="notification-message"></span>
+            <button id="notification-close" class="notification-close">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+    </div>
+
+    <script src="/static/app.js"></script>
+</body>
+</html>

@@ -139,6 +139,28 @@ async def update_board(
     return board
 
 
+@router.get("/{board_id}/columns")
+async def get_board_columns(board_id: int, db: Session = Depends(get_db)):
+    """Get all columns for a specific board."""
+    board = db.query(Board).filter(Board.id == board_id).first()
+    if not board:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail="Board not found"
+        )
+    
+    columns = db.query(Column).filter(Column.board_id == board_id).order_by(Column.position).all()
+    return [
+        {
+            "id": col.id,
+            "name": col.name,
+            "position": col.position,
+            "board_id": col.board_id
+        }
+        for col in columns
+    ]
+
+
 @router.delete("/{board_id}", status_code=status.HTTP_204_NO_CONTENT)
 async def delete_board(board_id: int, db: Session = Depends(get_db)):
     """Delete a board and all its columns and tasks."""
