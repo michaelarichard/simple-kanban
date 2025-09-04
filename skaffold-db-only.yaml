@@ -1,0 +1,33 @@
+apiVersion: skaffold/v4beta7
+kind: Config
+metadata:
+  name: simple-kanban-db
+deploy:
+  helm:
+    releases:
+    - name: simple-kanban-postgres
+      remoteChart: bitnami/postgresql
+      version: "16.7.11"
+      namespace: apps
+      setValues:
+        auth.postgresPassword: kanban
+        auth.username: kanban
+        auth.password: kanban
+        auth.database: simple_kanban
+        primary.persistence.size: 1Gi
+    - name: simple-kanban-redis
+      remoteChart: bitnami/redis
+      version: "21.2.3"
+      namespace: apps
+      setValues:
+        auth.password: kanban
+        master.persistence.size: 1Gi
+portForward:
+- resourceType: service
+  resourceName: simple-kanban-postgres-postgresql
+  port: 5432
+  localPort: 5432
+- resourceType: service
+  resourceName: simple-kanban-redis-master
+  port: 6379
+  localPort: 6379

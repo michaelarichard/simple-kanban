@@ -2,7 +2,7 @@
 replicaCount: 1
 
 image:
-  repository: simple-kanban
+  repository: registry.stormpath.net/simple-kanban
   pullPolicy: IfNotPresent
   tag: "latest"
 

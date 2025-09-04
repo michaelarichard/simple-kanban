@@ -4,6 +4,14 @@ description: Standard project templates and patterns
 
 # Project Templates
 
+## Container Registry Standards
+
+All container images should be built and tagged consistently:
+- Use `registry.stormpath.net/[project-name]` as image repository
+- Use semantic versioning for production releases
+- Include git commit hash for development builds
+- Follow naming convention: `registry.stormpath.net/[project-name]:[version]`
+
 ## Container-First Development Standards
 
 All projects must follow these containerization principles:

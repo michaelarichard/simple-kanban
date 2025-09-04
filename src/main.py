@@ -11,14 +11,17 @@ from pydantic import BaseModel
 from typing import Dict, Any
 import logging
 
+from .database import create_tables
+from .api import boards, columns, tasks
+
 # Configure logging
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
 # Initialize FastAPI app
 app = FastAPI(
-    title="simple-kanban",
-    description="A containerized Python application",
+    title="Simple Kanban Board",
+    description="Self-hosted kanban board with drag-and-drop functionality",
     version="1.0.0",
     docs_url="/docs",
     redoc_url="/redoc"
@@ -32,6 +35,19 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
+
+# Include API routers
+app.include_router(boards.router, prefix="/api/v1")
+app.include_router(columns.router, prefix="/api/v1")
+app.include_router(tasks.router, prefix="/api/v1")
+
+# Create database tables on startup
+@app.on_event("startup")
+async def startup_event():
+    """Initialize database tables on startup."""
+    logger.info("Creating database tables...")
+    create_tables()
+    logger.info("Database tables created successfully")
 
 # Pydantic models
 class HealthResponse(BaseModel):

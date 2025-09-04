@@ -11,7 +11,7 @@ from .models import Base
 # Database URL from environment
 DATABASE_URL = os.getenv(
     "DATABASE_URL",
-    "postgresql://kanban:kanban@localhost:5432/simple_kanban"
+    "postgresql://kanban:kanban@simple-kanban-postgres-postgresql.apps.svc.cluster.local:5432/simple_kanban"
 )
 
 # Create engine with connection pooling
